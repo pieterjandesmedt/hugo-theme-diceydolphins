@@ -1,0 +1,26 @@
+<section class="hero">
+  <div class="hero-body pb-2">
+    <div class="container">
+      <h1 class="is-size-1 is-family-secondary">
+        <a
+          href="/"
+          class="has-text-dark"
+          style="text-shadow: 0 0 1px white, 0 0 10px white, 0 0 50px white"
+        >
+          <div>
+            <img
+              src="/images/dicey-dolphins.png"
+              style="
+                height: 200px;
+              "
+            />
+          </div>
+          {{ with .Site.Title }}{{ . }}{{ end }}
+        </a>
+      </h1>
+      {{ with .Site.Params.Banner.subtitle }}
+      <h4 class="subtitle">{{ . | safeHTML }}</h4>
+      {{ end }}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,10 @@
+name: diceydolphins
+license: proprietary
+description: Theme for diceydolphins
+tags:
+  - contact form
+  - blog
+features:
+  - blog
+  - contact form
+min_version: 0.79

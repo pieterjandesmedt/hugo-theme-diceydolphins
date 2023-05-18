@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html
+  lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en-US{{ end }}"
+  style="
+    background: url(/photos/background.jpg) no-repeat fixed
+      center;
+    background-size: cover;
+  "
+>
+  {{ partial "header" . }}
+  <body style="min-height: 100%">
+	{{ partial "navbar" . }}
+    <div class="columns">
+      <div class="column">
+        {{ partial "hero" . }} {{/*{{ partial "tags" .
+        }} {{ if .Site.Params.Tiles.enable }} {{ partial "tile" (where
+        .Site.RegularPages.ByWeight.Reverse "Section" "portfolio") }} {{ end }}
+        */}} {{/* {{ if .Site.Params.Two.enable }} {{ partial "two" . }} {{ end
+        }} {{ if .Site.Params.Footer.enable }} {{ partial "footer" . }} {{ end
+        }} {{ partial "js" . }} */}}
+      </div>
+    </div>
+	<div class="container">
+		{{ range where .Site.RegularPages "Section" "front"}}
+		<div class="columns mb-6">
+			<div class="column is-8 is-offset-2 box p-6">
+
+				<div class="content">
+					<h2 class="title">{{ .Title }}</h2>
+					{{ with .Params.subtitle }}
+					<h4 class="subtitle">{{ . }}</h4>
+					{{ end }}
+					{{ .Content }}
+					{{ if eq .Params.button true }}
+					{{ partial "events-button" . }}
+					{{ end }}
+				</div>
+
+			</div>
+		</div>
+		{{ end }}
+
+		<div class="columns">
+			<div class="column is-8 is-offset-2 box p-6">
+				{{ partial "contact/mailchimp" . }}
+			</div>
+		</div>
+	</div>
+  </body>
+</html>

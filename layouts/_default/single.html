@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html
+  lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en-US{{ end }}"
+  style="
+    background: url(/photos/background.jpg) no-repeat fixed
+      center;
+    background-size: cover;
+  "
+>
+  {{ partial "header" . }}
+  <body style="min-height: 100%">
+	{{ partial "navbar" . }}
+    <div class="columns">
+      <div class="column">
+        {{ partial "hero" . }} {{/*{{ partial "tags" .
+        }} {{ if .Site.Params.Tiles.enable }} {{ partial "tile" (where
+        .Site.RegularPages.ByWeight.Reverse "Section" "portfolio") }} {{ end }}
+        */}} {{/* {{ if .Site.Params.Two.enable }} {{ partial "two" . }} {{ end
+        }} {{ if .Site.Params.Footer.enable }} {{ partial "footer" . }} {{ end
+        }} {{ partial "js" . }} */}}
+      </div>
+    </div>
+	<div class="container">
+		<div class="columns mb-6">
+			<div class="column is-8 is-offset-2 box p-6 content">
+			<header>
+				{{ with .Title }}
+				<h2 class="title is-spaced is-2">{{ . }}</h2>
+				{{ end }} {{ with .Params.subtitle }}
+				<h3 class="subtitle is-4">{{ . }}</h3>
+				{{ end }}
+			</header>
+			<div id="content">
+				{{ .Content }}
+			</div>
+
+			<div class="gallery">
+				{{ with .Params.images }} {{ with (index . 0) }}
+				<div class="first-image">
+					<div class="image-container">
+						{{ partial "micro/image-with-link" (dict "filename" . ) }}
+					</div>
+				</div>
+				{{ end }} {{ end }}
+
+				<div id="images">
+					{{ with .Params.images }} {{ range $i, $im := . }} {{ if ne $i 0 }}
+					<div class="image-container">
+						{{ partial "micro/image-with-link" (dict "filename" $im) }}
+					</div>
+					{{ end }} {{ end }} {{ end }}
+				</div>
+			</div>
+			{{ partial "article-tags" . }}
+			{{ if ne (.Page.RelPermalink) "/static/volgende-events/" }}
+			<div class="mt-6">
+				{{ if eq .Params.button true }}
+				{{ partial "events-button" . }}
+				{{ end }}
+			</div>
+			{{ end }}
+			</div>
+		</div>
+
+		<div class="columns">
+			<div class="column is-8 is-offset-2 box p-6">
+				{{ partial "contact/mailchimp" . }}
+			</div>
+		</div>
+	</div>
+	{{ if eq (.Page.RelPermalink) "/static/volgende-events/" }}
+	<script>
+		async function fetchEvents() {
+			const result = await fetch('/.netlify/functions/events');
+			try {
+				const events = result.json();
+				return events;
+			} catch (err) {
+				console.log(err);
+			}
+		}
+
+		async function load() {
+			const events = await fetchEvents();
+			try {
+				const elem = document.getElementById('weekends');
+				if (events.length > 0) elem.innerHTML = events.map(eventToHtml).join('');
+				else elem.innerHTML = 'Er zijn geen volgende events.';
+			} catch (err) {
+				console.error(err);
+				elem.innerHTML = 'Er zijn geen volgende events.';
+			}
+		}
+
+		function eventToHtml(event = {}) {
+			const reserved = event.isReserved ?
+			{ icon: 'fas fa-xmark', color: 'danger', 'text': 'Gereserveerd' }:
+			{ icon: 'fas fa-check', color: 'success', 'text': 'Vrij' };
+			return `
+<a href="mailto:${createMailTo(event)}">
+<div class="card has-background-info-light mb-3">
+  <div class="card-content">
+    <div class="content">
+      <h5 class="title mb-2">${event?.startDate} tot ${event?.endDate}</h3>
+		<span class="icon-text">
+			<span class="icon has-text-${reserved.color}" style="display: inline-block !important"><i class="${reserved.icon}"></i></span>
+			<span class="has-text-${reserved.color}">${reserved.text}</span>
+		</p>
+    </div>
+  </div>
+</div>
+</a>`;
+			// return `<pre>${JSON.stringify(event, null, 2)}</pre>`;
+		}
+
+		function createMailTo(event = {}) {
+			const params = new URLSearchParams();
+
+			params.set('subject', `[Bed&BoardGames] reserveren weekend ${event.startDate}`);
+			params.set('body', `Hallo Kevin,\n\nIk wil graag het weekend van ${event.startDate} tot ${event.endDate} reserveren voor Bed & Board Games. We komen met ____ personen.`);
+
+			const email = 'kxexvxixnx.xdxexlxexcxlxuxyxsxexaxtxgxmxaxixlx';
+			const to = [
+				email.replaceAll('x', '').replaceAll('at', '@'),
+				'com'
+			].join('.');
+			return `${to}?${params.toString().replaceAll('+', ' ')}`;
+		}
+
+		window.onload = load;
+	</script>
+	{{ end }}
+  </body>
+</html>

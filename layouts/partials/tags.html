@@ -1,0 +1,19 @@
+<section id="tags" class="section">
+	<div class="container">
+		<ul class="tags">
+			<li>
+				<a href="{{ "/" | relLangURL }}">All</a>
+			</li>
+			{{ $permalink := .Permalink }}
+			{{ range .Site.Taxonomies.tags }}
+			<li>
+				{{ if (eq $permalink .Page.Permalink) }}
+				<span class="has-text-weight-bold">{{ .Page.Title }}</span>
+				{{ else }}
+				<a href="{{ .Page.Permalink | relLangURL }}">{{ .Page.Title }}</a>
+				{{ end }}
+			</li>
+			{{ end }}
+		</ul>
+	</div>
+</section>

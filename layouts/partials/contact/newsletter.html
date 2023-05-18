@@ -1,0 +1,43 @@
+<div class="columns mt-6">
+  <div class="column is-half is-offset-one-quarter">
+    <form
+      method="POST"
+      name="diceydolphins newsletter"
+      action="success"
+      data-netlify="true"
+      netlify-honeypot="phonenumber"
+    >
+      <label
+        class="label"
+        for="email"
+        style="text-shadow: 0 0 1px white, 0 0 10px white, 0 0 50px white"
+        >{{ .Site.Params.contact.newsletterName }}</label
+      >
+      <div class="field is-hidden">
+        <label class="label" for="phonenumber"
+          >Don’t fill this out if you’re human</label
+        >
+        <input class="input" type="text" name="phonenumber" id="phonenumber" />
+      </div>
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <input
+            class="input"
+            type="text"
+            name="email"
+            id="email"
+            required
+            placeholder="jij@mailserver.com"
+          />
+        </div>
+        <div class="control">
+          <input
+            type="submit"
+            value="{{ .Site.Params.contact.buttonSend }}"
+            class="button is-primary"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

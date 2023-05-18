@@ -1,0 +1,10 @@
+{{ if and .Params.tags (ne .Section "") }}
+<div class="tags">
+	<ul>
+		{{ range (.GetTerms "tags") }}
+		<li><a href="{{ .Permalink | relLangURL }}"><i class="fas fa-tag"></i> {{ .LinkTitle }}</a></li>
+		{{ end }}
+	</ul>
+</div>
+<!-- /#article-tags -->
+{{ end }}
